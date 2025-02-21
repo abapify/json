@@ -1,0 +1,37 @@
+<xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+               xmlns:sap="http://www.sap.com/sapxsl"
+               version="1.0">
+
+  <xsl:strip-space elements="*"/>
+
+  <xsl:param name="CASE" sap:type="ZIF_ABAP_CASE"/>
+
+  <!-- Identity template: Copy all elements and attributes by default -->
+  <xsl:template match="node()[string()] | @*">
+    <xsl:copy>
+      <xsl:apply-templates select="node() | @*"/>
+    </xsl:copy>
+  </xsl:template>
+
+  <!-- Remove @name attributes under /object/node() -->
+  <xsl:template match="/object/node()/@name"/>
+
+  <!-- Transform @name attributes using sap:call-external -->
+  <xsl:template match="@name">
+    <sap:call-external name="CASE" method="FROM_ABAP">
+      <sap:callvalue param="VALUE" select="string(.)"/>
+      <sap:callvariable param="RESULT" name="convertedName"/>
+    </sap:call-external>
+
+    <xsl:attribute name="name">
+      <xsl:value-of select="$convertedName"/>
+    </xsl:attribute>
+  </xsl:template>
+
+  <!-- Process document root -->
+  <xsl:template match="/*">
+    <xsl:apply-templates select="node()"/>
+  </xsl:template>
+
+</xsl:transform>
+

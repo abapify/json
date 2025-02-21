@@ -1,0 +1,49 @@
+<xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+               xmlns:sap="http://www.sap.com/sapxsl"
+               version="1.0">
+
+  <xsl:strip-space elements="*"/>
+
+  <xsl:param name="CASE" sap:type="ZIF_ABAP_CASE"/>
+
+  <!-- Wrap the whole JSON into an "object" element -->
+  <xsl:template match="/">
+    <xsl:element name="object">
+      <xsl:copy>
+        <xsl:apply-templates/>
+      </xsl:copy>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- Convert root nodes to an ABAP structure representation -->
+  <xsl:template match="/node()">
+    <xsl:copy>
+      <xsl:attribute name="name">DATA</xsl:attribute>
+      <xsl:apply-templates/>
+    </xsl:copy>
+  </xsl:template>
+
+  <!-- Ignore JSON null values -->
+  <xsl:template match="null"/>
+
+  <!-- Identity transformation for attributes and elements -->
+  <xsl:template match="@*|node()">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+  </xsl:template>
+
+  <!-- Transform @name attributes using sap:call-external -->
+  <xsl:template match="@name">
+    <sap:call-external name="CASE" method="TO_ABAP">
+      <sap:callvalue param="VALUE" select="string(.)"/>
+      <sap:callvariable param="RESULT" name="convertedName"/>
+    </sap:call-external>
+
+    <xsl:attribute name="name">
+      <xsl:value-of select="normalize-space($convertedName)"/>
+    </xsl:attribute>
+  </xsl:template>
+
+</xsl:transform>
+
