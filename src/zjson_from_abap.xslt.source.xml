@@ -31,13 +31,22 @@
   <!-- Remove <str name="%type"> -->
   <xsl:template match="str[@name='%type']"/>
 
-  <!-- Replace objects containing %val with their contents -->
-  <xsl:template match="object[object[@name='%val']]">
-    <object>
-      <xsl:apply-templates select="@name"/>  <!-- Ensure @name transformation applies -->
-      <xsl:apply-templates select="object[@name='%val']/*"/>  <!-- Replace with content of %val -->
-    </object>
-  </xsl:template>
+<xsl:template match="//*[*[@name='%val']]">
+  <xsl:apply-templates select="*[@name='%val']"/>
+</xsl:template>
+
+<xsl:template match="*[@name='%val']">
+  <xsl:copy>
+    <!-- Apply templates to transform the name attribute -->
+    <xsl:apply-templates select="../@name"/>
+    <!-- Apply templates to all child nodes -->
+    <xsl:apply-templates select="node()"/>
+  </xsl:copy>
+</xsl:template>
+
+
+
+
 
   <!-- Process document root -->
   <xsl:template match="/*">
