@@ -43,6 +43,47 @@ data(json_string) = zcl_json=>render( your_any_variable )
 zcl_json=>parse( json_binary_or_string )->to( ref #(  your_data_variable ) ).
 ```
 
+### Support data refs
+It's possible to create JSON from data references
+```abap
+" render binary
+data(json_binary) = zcl_json=>render( value payload_type( ref_to_data = new any_type( some_values = .. ) ) )
+```
+
+### Support polymorphic arrays
+By default ABAP internal tables do not support polymorphism or union types. You need to normalize type and build type including all elements. However in a modern world JSON schemas can use such constructions as `oneOf`, `anyOf` and etc. As a result of data refs support we can also support `table of ref to data` which allows us to build arrays where every line may be of a different type.
+
+```abap
+ TYPES:
+   BEGIN OF abap_bool_ts,
+    true TYPE abap_bool,
+   END OF abap_bool_ts,
+   BEGIN OF xsdboolean_ts,
+    true TYPE xsdboolean,
+   END OF xsdboolean_ts, 
+   BEGIN OF root_ts,
+     array_of_ref_to_data TYPE TABLE of REF TO data WITH EMPTY KEY,
+   END OF root_ts.
+
+TRY.   
+      out->write(
+        name = 'Polymorphic array'
+        data = zcl_json=>stringify(
+            VALUE root_ts(
+                array_of_ref_to_data = value #(
+                    ( new abap_bool_ts(  true = abap_true ) )
+                    ( new xsdboolean_ts( true = abap_true ) )
+                    ) ) ) ).
+
+     CATCH cx_static_check.
+       "handle exception
+   ENDTRY.
+```
+will print
+```json
+{"arrayOfRefToData":[{"true":"X"},{"true":true}]}
+```
+
 ## Dependencies
 
 - [ZCL_ABAP_CASE](https://github.com/abapify/case)
