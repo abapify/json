@@ -28,6 +28,17 @@
     </xsl:attribute>
   </xsl:template>
 
+  <!-- Remove <str name="%type"> -->
+  <xsl:template match="str[@name='%type']"/>
+
+  <!-- Replace objects containing %val with their contents -->
+  <xsl:template match="object[object[@name='%val']]">
+    <object>
+      <xsl:apply-templates select="@name"/>  <!-- Ensure @name transformation applies -->
+      <xsl:apply-templates select="object[@name='%val']/*"/>  <!-- Replace with content of %val -->
+    </object>
+  </xsl:template>
+
   <!-- Process document root -->
   <xsl:template match="/*">
     <xsl:apply-templates select="node()"/>

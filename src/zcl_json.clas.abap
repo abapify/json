@@ -92,13 +92,23 @@ CLASS ZCL_JSON IMPLEMENTATION.
 
     call transformation id
       source data = data
-      options initial_components = initial_components
+      options
+        initial_components = initial_components
+        data_refs = 'embedded'
       result xml lo_json_abap.
 
     data(lv_json) = lo_json_abap->get_output( ).
 
     if case is not bound.
       case = zcl_abap_case=>camel( ).
+    endif.
+
+    if 1 eq 2.
+        call transformation zjson_from_abap
+            parameters
+                case = case
+              source xml lv_json
+              result xml data(lv_xml_debug).
     endif.
 
     " 2) normalize JSON
