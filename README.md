@@ -33,7 +33,7 @@ Unfortunately I was not please with any of approaches and decided to create an o
 " render binary
 data(json_binary) = zcl_json=>render( your_any_variable )
 " or stringify (same but as string)
-data(json_string) = zcl_json=>render( your_any_variable )
+data(json_string) = zcl_json=>stringify( your_any_variable )
 ```
 
 ### Parse JSON
