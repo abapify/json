@@ -10,6 +10,18 @@
     {
       "url": "https://github.com/abapify/case",
       "files": "/src/**/*.*"
+    },
+{
+      "url": "https://github.com/abapify/codepage",
+      "files": "/src/**/*.*"
+    },
+{
+      "url": "https://github.com/abapify/assert",
+      "files": "/src/**/*.*"
+    },
+{
+      "url": "https://github.com/abapify/throw",
+      "files": "/src/**/*.*"
     }
   ],
   "syntax": {
