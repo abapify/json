@@ -25,6 +25,10 @@ Unfortunately I was not please with any of approaches and decided to create an o
 - Suppress initital components ( feature of identity transformation )
 - Allowing to use own conversion rules
 
+### Performance benchmark
+
+You can find more details and data in [JSON benchmark](https://github.com/abapify/json-benchmark) project where we analyse different libs, their features and compare performance. Feel free to contribute!
+
 ## ZCL_JSON
 
 ### Render JSON
