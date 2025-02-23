@@ -89,5 +89,9 @@ will print
 ```
 
 ## Dependencies
-
 - [ZCL_ABAP_CASE](https://github.com/abapify/case)
+- [ZCL_ABAP_CODEPAGE](https://github.com/abapify/codepage)
+
+## Test Dependencies
+- [assert](https://github.com/abapify/assert) (via codepage)
+- [throw](https://github.com/abapify/throw) (via codepage)
