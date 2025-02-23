@@ -123,7 +123,7 @@ CLASS ZCL_JSON IMPLEMENTATION.
 
      result = cond #(
       LET lv_json_out = lo_json_out->get_output( ) IN
-      WHEN xstrlen( lv_json_out ) = 0 THEN lcl_codepage=>to( `{}` )
+      WHEN xstrlen( lv_json_out ) = 0 THEN zcl_abap_codepage=>to( `{}` )
       ELSE lv_json_out ).
 
   endmethod.
@@ -145,7 +145,7 @@ CLASS ZCL_JSON IMPLEMENTATION.
         initial_components = initial_components
     ).
 
-    result = lcl_codepage=>from( json ).
+    result = zcl_abap_codepage=>from( json ).
 
   endmethod.
 ENDCLASS.
