@@ -67,7 +67,12 @@ CLASS ZCL_JSON IMPLEMENTATION.
           source xml json
           result xml lo_json_out.
 
-        result = new lcl_parser_result( json = lo_json_out->get_output( ) ).
+        data(lo_parser) = new lcl_parser_result( ).
+        " perfromance wise one more copying less ( in a constructor )
+        lo_parser->json = lo_json_out->get_output( ).
+
+        result = lo_parser.
+
 
       catch cx_transformation_error into data(lo_cx).
         raise exception type lcx_parse_error exporting previous = lo_cx.

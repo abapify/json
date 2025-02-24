@@ -1,7 +1,6 @@
-CLASS lcl_parser_result DEFINITION.
+CLASS lcl_parser_result DEFINITION FRIENDS zcl_json.
   PUBLIC SECTION.
     INTERFACES zif_parser.
-    METHODS constructor IMPORTING json TYPE xstring.
   PRIVATE SECTION.
     DATA json TYPE xstring.
 ENDCLASS.
@@ -11,9 +10,6 @@ ENDCLASS.
 
 " this class expects to have json coming in asJSON format
 CLASS lcl_parser_result IMPLEMENTATION.
-  METHOD constructor.
-    me->json = json.
-  ENDMETHOD.
   METHOD zif_parser~to.
 
 
